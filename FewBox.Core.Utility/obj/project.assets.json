@@ -228,13 +228,13 @@
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "1.0.8",
     "restore": {
-      "projectUniqueName": "d:\\K8S\\FewBox.Core.Utility\\FewBox.Core.Utility\\FewBox.Core.Utility.csproj",
+      "projectUniqueName": "D:\\K8S\\FewBox.Core.Utility\\FewBox.Core.Utility\\FewBox.Core.Utility.csproj",
       "projectName": "FewBox.Core.Utility",
-      "projectPath": "d:\\K8S\\FewBox.Core.Utility\\FewBox.Core.Utility\\FewBox.Core.Utility.csproj",
+      "projectPath": "D:\\K8S\\FewBox.Core.Utility\\FewBox.Core.Utility\\FewBox.Core.Utility.csproj",
       "packagesPath": "C:\\Users\\pangxiaoliang\\.nuget\\packages\\",
-      "outputPath": "d:\\K8S\\FewBox.Core.Utility\\FewBox.Core.Utility\\obj\\",
+      "outputPath": "D:\\K8S\\FewBox.Core.Utility\\FewBox.Core.Utility\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
