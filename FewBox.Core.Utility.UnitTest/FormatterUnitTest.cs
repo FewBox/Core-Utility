@@ -1,0 +1,38 @@
+﻿using FewBox.Core.Utility.Formatter;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace FewBox.Core.Utility.UnitTest
+{
+    [TestClass]
+    public class FormatterUnitTest
+    {
+        [TestMethod]
+        public void TestBase64Utility()
+        {
+            string helloWorld = "Hello World!";
+            string helloWorldBase64String = Base64Utility.Serialize(helloWorld);
+            Assert.AreEqual("Hello World!", Base64Utility.Deserialize(helloWorldBase64String));
+        }
+
+        [TestMethod]
+        public void TestJsonUtility()
+        {
+            var helloWorld = new { Greeting = "Hello World!" };
+            string helloWorldJsonString = JsonUtility.Serialize(helloWorld);
+            Assert.AreEqual("Hello World!", JsonUtility.Deserialize<dynamic>(helloWorldJsonString).Greeting.ToString());
+        }
+
+        [TestMethod]
+        public void TestXmlUtility()
+        {
+            var helloWorld = new HelloWorld { Greeting = "Hello World!" };
+            string helloWorldXmlString = XmlUtility.Serialize(helloWorld);
+            Assert.AreEqual("Hello World!", XmlUtility.Deserialize<HelloWorld>(helloWorldXmlString).Greeting);
+        }
+
+        public class HelloWorld
+        {
+            public string Greeting { get; set; }
+        }
+    }
+}
