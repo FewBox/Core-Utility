@@ -73,7 +73,8 @@ namespace FewBox.Core.Utility.UnitTest
         public void TestRestfulUtilityDelete()
         {
             string url = $"{this.BaseUrl}/posts/1";
-            var response = RestfulUtility.Delete<dynamic>(url, new List<Header>{});
+            var post = RestfulUtility.Delete<dynamic>(url, new List<Header>{});
+            Assert.IsNotNull(post);
         }
 
         private class Post

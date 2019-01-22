@@ -1,9 +1,0 @@
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\bin\Debug\netstandard2.0\FewBox.Core.Utility.deps.json
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\bin\Debug\netstandard2.0\FewBox.Core.Utility.dll
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\bin\Debug\netstandard2.0\FewBox.Core.Utility.pdb
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\obj\Debug\netstandard2.0\FewBox.Core.Utility.csprojAssemblyReference.cache
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\obj\Debug\netstandard2.0\FewBox.Core.Utility.csproj.CoreCompileInputs.cache
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\obj\Debug\netstandard2.0\FewBox.Core.Utility.AssemblyInfoInputs.cache
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\obj\Debug\netstandard2.0\FewBox.Core.Utility.AssemblyInfo.cs
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\obj\Debug\netstandard2.0\FewBox.Core.Utility.dll
-D:\K8S\FewBox.Core.Utility\FewBox.Core.Utility\obj\Debug\netstandard2.0\FewBox.Core.Utility.pdb
