@@ -2,7 +2,8 @@ language: csharp
 mono: none
 dotnet: 2.1.300
 install:
-  - dotnet restore
+  - dotnet restore $TRAVIS_BUILD_DIR/FewBox.Core.Utility.UnitTest/FewBox.Core.Utility.UnitTest.csproj
+  - dotnet restore $TRAVIS_BUILD_DIR/FewBox.Core.Utility/FewBox.Core.Utility.csproj
 script:
   - dotnet test $TRAVIS_BUILD_DIR/FewBox.Core.Utility.UnitTest/FewBox.Core.Utility.UnitTest.csproj # q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic]
   - dotnet pack -c Release $TRAVIS_BUILD_DIR/FewBox.Core.Utility/FewBox.Core.Utility.csproj
