@@ -3,7 +3,7 @@ mono: none
 dotnet: 2.1.300
 env:
   - PROJECTNAME=FewBox.Core.Utility
-  - PROJECTUNITTESTNAME=$PROJECTNAME.UnitTest
+  - PROJECTUNITTESTNAME=FewBox.Core.Utility.UnitTest
 install:
   - dotnet restore $TRAVIS_BUILD_DIR/$PROJECTNAME/$PROJECTNAME.csproj
   - dotnet restore $TRAVIS_BUILD_DIR/$PROJECTUNITTESTNAME/$PROJECTUNITTESTNAME.csproj
