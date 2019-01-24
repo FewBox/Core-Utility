@@ -74,7 +74,6 @@ namespace FewBox.Core.Utility.UnitTest
         {
             string url = $"{this.BaseUrl}/posts/1";
             var post = RestfulUtility.Delete<Object>(url, new List<Header>{});
-            Assert.IsNotNull(post);
         }
 
         private class Post
