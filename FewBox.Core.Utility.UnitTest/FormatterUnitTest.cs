@@ -1,4 +1,5 @@
-﻿using FewBox.Core.Utility.Formatter;
+﻿using System;
+using FewBox.Core.Utility.Formatter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FewBox.Core.Utility.UnitTest
@@ -30,6 +31,15 @@ namespace FewBox.Core.Utility.UnitTest
             Assert.AreEqual("Hello World!", XmlUtility.Deserialize<HelloWorld>(helloWorldXmlString).Greeting);
         }
 
+        [TestMethod]
+        public void TestBinaryUtility()
+        {
+            var helloWorld = new HelloWorld { Greeting = "Hello World!" };
+            var helloWorldBinary = BinaryUtility.Serialize(helloWorld);
+            Assert.AreEqual("Hello World!", BinaryUtility.Deserialize<HelloWorld>(helloWorldBinary).Greeting);
+        }
+
+        [Serializable]
         public class HelloWorld
         {
             public string Greeting { get; set; }
