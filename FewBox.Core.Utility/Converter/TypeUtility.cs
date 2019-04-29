@@ -17,6 +17,10 @@ namespace FewBox.Core.Utility.Converter
             {
                 value = (T)Convert.ChangeType(new Guid(input as string), typeof(T));
             }
+            else if(outputType == typeof(string))
+            {
+                value = (T)Convert.ChangeType(input.ToString(), typeof(T));
+            }
             else
             {
                 value = (T)Convert.ChangeType(input, typeof(T));
