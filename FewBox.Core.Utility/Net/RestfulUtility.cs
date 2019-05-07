@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FewBox.Core.Utility.Net
 {
@@ -12,99 +13,41 @@ namespace FewBox.Core.Utility.Net
         public static O Post<B, O>(string url, Package<B> package) where O : class
         {
             string responseString = String.Empty;
-            WapperHttpClient((httpClient) => {
-                HttpResponseMessage response = httpClient.PostAsync(url,
-                ConvertBodyObjectToStringContent(package.Body)).Result;
-                response.EnsureSuccessStatusCode();
-                responseString = response.Content.ReadAsStringAsync().Result;
+            return WapperHttpClient<O>((httpClient) => {
+                return httpClient.PostAsync(url, ConvertBodyObjectToStringContent(package.Body));
             }, package.Headers);
-            return JsonUtility.Deserialize<O>(responseString);
         }
 
         public static O Put<B, O>(string url, Package<B> package) where O : class
         {
-            string responseString = String.Empty;
-            WapperHttpClient((httpClient) =>
+            return WapperHttpClient<O>((httpClient) =>
             {
-                httpClient.PutAsync(url,
-                ConvertBodyObjectToStringContent(package.Body)).ContinueWith(
-                    (requestTask) =>
-                    {
-                        HttpResponseMessage response = requestTask.Result;
-                        response.EnsureSuccessStatusCode();
-                        response.Content.ReadAsStringAsync().ContinueWith(
-                            (readTask) =>
-                            {
-                                responseString = readTask.Result;
-                            });
-                    }
-                ).Wait();
+                return httpClient.PutAsync(url, ConvertBodyObjectToStringContent(package.Body));
             }, package.Headers);
-            return JsonUtility.Deserialize<O>(responseString);
         }
 
         public static O Patch<B, O>(string url, Package<B> package) where O : class
         {
-            string responseString = String.Empty;
-            WapperHttpClient((httpClient) =>
+            return WapperHttpClient<O>((httpClient) =>
             {
-                httpClient.PatchAsync(url,
-                ConvertBodyObjectToStringContent(package.Body)).ContinueWith(
-                    (requestTask) =>
-                    {
-                        HttpResponseMessage response = requestTask.Result;
-                        response.EnsureSuccessStatusCode();
-                        response.Content.ReadAsStringAsync().ContinueWith(
-                            (readTask) =>
-                            {
-                                responseString = readTask.Result;
-                            });
-                    }
-                ).Wait();
+                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body));
             }, package.Headers);
-            return JsonUtility.Deserialize<O>(responseString);
         }
         
         public static O Delete<O>(string url, IList<Header> headers) where O : class
         {
-            string responseString = String.Empty;
-            WapperHttpClient((httpClient) =>
+            return WapperHttpClient<O>((httpClient) =>
             {
-                httpClient.DeleteAsync(url).ContinueWith(
-                    (requestTask) =>
-                    {
-                        HttpResponseMessage response = requestTask.Result;
-                        response.EnsureSuccessStatusCode();
-                        response.Content.ReadAsStringAsync().ContinueWith(
-                            (readTask) =>
-                            {
-                                responseString = readTask.Result;
-                            });
-                    }
-                ).Wait();
+                return httpClient.DeleteAsync(url);
             }, headers);
-            return JsonUtility.Deserialize<O>(responseString);
         }
 
         public static O Get<O>(string url, IList<Header> headers) where O : class
         {
-            string responseString = String.Empty;
-            WapperHttpClient((httpClient) =>
+            return WapperHttpClient<O>((httpClient) =>
             {
-                httpClient.GetAsync(url).ContinueWith(
-                    (requestTask) =>
-                    {
-                        HttpResponseMessage response = requestTask.Result;
-                        response.EnsureSuccessStatusCode();
-                        response.Content.ReadAsStringAsync().ContinueWith(
-                            (readTask) =>
-                            {
-                                responseString = readTask.Result;
-                            });
-                    }
-                ).Wait();
+                return httpClient.GetAsync(url);
             }, headers);
-            return JsonUtility.Deserialize<O>(responseString);
         }
 
         private static StringContent ConvertBodyObjectToStringContent<T>(T body)
@@ -126,13 +69,33 @@ namespace FewBox.Core.Utility.Net
             }
         }
 
-        private static void WapperHttpClient(Action<HttpClient> action, IList<Header> headers)
+        private static O WapperHttpClient<O>(Func<HttpClient, Task<HttpResponseMessage>> action, IList<Header> headers) where O : class
         {
             using (HttpClient httpClient = new HttpClient())
             {
+                httpClient.Timeout = TimeSpan.FromMinutes(1);
                 InitHeadersObjectToHttpRequestHeaders(httpClient, headers);
-                action(httpClient);
+                return GetResponse<O>(action(httpClient));
             }
+        }
+
+        private static O GetResponse<O>(Task<HttpResponseMessage> task) where O : class
+        {
+            O response = default(O);
+            task.ContinueWith((requestTask) =>
+                {
+                    HttpResponseMessage httpResponseMessage = requestTask.Result;
+                    httpResponseMessage.EnsureSuccessStatusCode();
+                    return httpResponseMessage.Content.ReadAsStringAsync().Result;
+                }
+            )
+            .ContinueWith((readTask) =>
+                {
+                    response = JsonUtility.Deserialize<O>(readTask.Result);
+                }
+            )
+            .Wait();
+            return response;
         }
     }
 }

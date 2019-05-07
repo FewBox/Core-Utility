@@ -76,6 +76,22 @@ namespace FewBox.Core.Utility.UnitTest
             var post = RestfulUtility.Delete<Object>(url, new List<Header>{});
         }
 
+        //[TestMethod]
+        public void TestPerformance()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for(int index=0;index<200;index++)
+            {
+                string url = $"https://raw.githubusercontent.com/FewBox/fewbox.github.io/master/version.json";
+                var response = RestfulUtility.Get<Object>(url, new List<Header>{});
+                string responseString = response.ToString();
+                Assert.IsNotNull(responseString);
+            }
+            stopwatch.Stop();
+            Assert.IsTrue(stopwatch.ElapsedMilliseconds < 5000);
+        }
+
         private class Post
         {
             public int Id { get; set; }
