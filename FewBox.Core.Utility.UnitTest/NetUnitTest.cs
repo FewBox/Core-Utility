@@ -15,65 +15,85 @@ namespace FewBox.Core.Utility.UnitTest
         [TestInitialize]
         public void Init()
         {
-            this.BaseUrl = "https://jsonplaceholder.typicode.com";
+            this.BaseUrl = "https://httpbin.org";
         }
 
         [TestMethod]
         public void TestRestfulUtilityGet()
         {
-            string url = $"{this.BaseUrl}/posts/1";
-            var post = RestfulUtility.Get<Post>(url, new List<Header>{});
-            Assert.IsNotNull(post);
-            Assert.AreEqual(1, post.Id);
+            string url = $"{this.BaseUrl}/get";
+            string token = "<token>";
+            var response = RestfulUtility.Get<Response>(url, token, new List<Header> { });
+            Assert.IsNotNull(response);
+            Assert.AreEqual($"Bearer {token}", response.Headers["Authorization"].Value);
         }
 
         [TestMethod]
         public void TestRestfulUtilityPost()
         {
-            string url = $"{this.BaseUrl}/posts";
-            var post = RestfulUtility.Post<Post, Post>(url, new Package<Post>{ 
+            string url = $"{this.BaseUrl}/post";
+            string token = "<token>";
+            var response = RestfulUtility.Post<Request, Response>(url, token, new Package<Request>
+            {
                 Headers = new List<Header>{
-                    new Header { Key = "Token", Value = "FEW-BOX" }
+                    new Header { Key = "Trace-Id", Value = "FEWBOX001" }
                 },
-                Body = new Post { UserId = 1, Title = "Hello", Body = "World!" }
+                Body = new Request { Name = "FewBox" }
             });
-            Assert.IsNotNull(post);
-            Assert.AreEqual(101, post.Id);
+            Assert.IsNotNull(response);
+            Assert.AreEqual($"Bearer {token}", response.Headers["Authorization"].Value);
+            Assert.AreEqual($"FEWBOX001", response.Headers["Trace-Id"].Value);
+            Assert.AreEqual($"FewBox", response.Json["Name"].Value);
+            Assert.AreEqual($"FewBox", JsonUtility.Deserialize<Request>(response.Data).Name);
         }
 
         [TestMethod]
         public void TestRestfulUtilityPut()
         {
-            string url = $"{this.BaseUrl}/posts/1";
-            var post = RestfulUtility.Put<Post, Post>(url, new Package<Post>{ 
+            string url = $"{this.BaseUrl}/put";
+            string token = "<token>";
+            var response = RestfulUtility.Put<Request, Response>(url, token, new Package<Request>
+            {
                 Headers = new List<Header>{
-                    new Header { Key = "Token", Value = "FEW-BOX" }
+                    new Header { Key = "Trace-Id", Value = "FEWBOX001" }
                 },
-                Body = new Post { UserId = 1, Title = "Hello", Body = "World!" }
+                Body = new Request { Name = "FewBox" }
             });
-            Assert.IsNotNull(post);
-            Assert.AreEqual(1, post.UserId);
+            Assert.IsNotNull(response);
+            Assert.AreEqual($"Bearer {token}", response.Headers["Authorization"].Value);
+            Assert.AreEqual($"FEWBOX001", response.Headers["Trace-Id"].Value);
+            Assert.AreEqual($"FewBox", response.Json["Name"].Value);
+            Assert.AreEqual($"FewBox", JsonUtility.Deserialize<Request>(response.Data).Name);
         }
 
         [TestMethod]
         public void TestRestfulUtilityPatch()
         {
-            string url = $"{this.BaseUrl}/posts/1";
-            var post = RestfulUtility.Put<Post, Post>(url, new Package<Post>{ 
+            string url = $"{this.BaseUrl}/patch";
+            var response = RestfulUtility.Patch<Request, Response>(url, new Package<Request>
+            {
                 Headers = new List<Header>{
-                    new Header { Key = "Token", Value = "FEW-BOX" }
+                    new Header { Key = "Trace-Id", Value = "FEWBOX001" }
                 },
-                Body = new Post { Title = "FewBox" }
+                Body = new Request { Name = "FewBox" }
             });
-            Assert.IsNotNull(post);
-            Assert.AreEqual("FewBox", post.Title);
+            Assert.IsNotNull(response);
+            Assert.AreEqual($"FEWBOX001", response.Headers["Trace-Id"].Value);
+            Assert.AreEqual($"FewBox", response.Json["Name"].Value);
+            Assert.AreEqual($"FewBox", JsonUtility.Deserialize<Request>(response.Data).Name);
         }
 
         [TestMethod]
         public void TestRestfulUtilityDelete()
         {
-            string url = $"{this.BaseUrl}/posts/1";
-            var post = RestfulUtility.Delete<Object>(url, new List<Header>{});
+            string url = $"{this.BaseUrl}/delete";
+            string token = "<token>";
+            var response = RestfulUtility.Delete<Response>(url, token, new List<Header>{
+                new Header { Key = "Trace-Id", Value = "FEWBOX001" }
+            });
+            Assert.IsNotNull(response);
+            Assert.AreEqual($"Bearer {token}", response.Headers["Authorization"].Value);
+            Assert.AreEqual($"FEWBOX001", response.Headers["Trace-Id"].Value);
         }
 
         //[TestMethod]
@@ -92,12 +112,18 @@ namespace FewBox.Core.Utility.UnitTest
             Assert.IsTrue(stopwatch.ElapsedMilliseconds < 5000);
         }
 
-        private class Post
+        private class Request
         {
-            public int Id { get; set; }
-            public int UserId { get; set; }
-            public string Title { get; set; }
-            public string Body { get; set; }
+            public string Name { get; set; }
+        }
+
+        private class Response
+        {
+            public dynamic Args { get; set; }
+            public dynamic Headers { get; set; }
+            public dynamic Data { get; set; }
+            public dynamic Json { get; set; }
+            public string Url { get; set; }
         }
     }
 }
