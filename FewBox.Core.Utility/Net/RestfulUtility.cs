@@ -10,10 +10,20 @@ namespace FewBox.Core.Utility.Net
 {
     public static class RestfulUtility
     {
+        public static bool IsCertificateNeedValidate { private get; set; }
+        public static TimeSpan Timeout { private get; set; }
+
+        static RestfulUtility()
+        {
+            IsCertificateNeedValidate = true;
+            Timeout = TimeSpan.FromMinutes(1);
+        }
+
         public static O Post<B, O>(string url, Package<B> package) where O : class
         {
             string responseString = String.Empty;
-            return WapperHttpClient<O>((httpClient) => {
+            return WapperHttpClient<O>((httpClient) =>
+            {
                 return httpClient.PostAsync(url, ConvertBodyObjectToStringContent(package.Body));
             }, package.Headers);
         }
@@ -21,7 +31,8 @@ namespace FewBox.Core.Utility.Net
         public static O Post<B, O>(string url, string token, Package<B> package) where O : class
         {
             string responseString = String.Empty;
-            return WapperHttpClientWithToken<O>((httpClient) => {
+            return WapperHttpClientWithToken<O>((httpClient) =>
+            {
                 return httpClient.PostAsync(url, ConvertBodyObjectToStringContent(package.Body));
             }, token, package.Headers);
         }
@@ -56,7 +67,7 @@ namespace FewBox.Core.Utility.Net
                 return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body));
             }, token, package.Headers);
         }
-        
+
         public static O Delete<O>(string url, IList<Header> headers) where O : class
         {
             return WapperHttpClient<O>((httpClient) =>
@@ -116,15 +127,27 @@ namespace FewBox.Core.Utility.Net
 
         private static O WapperHttpClientWithToken<O>(Func<HttpClient, Task<HttpResponseMessage>> action, string token, IList<Header> headers) where O : class
         {
-            using (HttpClient httpClient = new HttpClient())
+            using (var handler = new HttpClientHandler())
             {
-                httpClient.Timeout = TimeSpan.FromMinutes(1);
-                if(!String.IsNullOrEmpty(token))
+                if(!IsCertificateNeedValidate)
                 {
-                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    handler.ClientCertificateOptions = ClientCertificateOption.Manual;
+                    handler.ServerCertificateCustomValidationCallback =
+                        (httpRequestMessage, cert, cetChain, policyErrors) =>
+                    {
+                        return true;
+                    };
                 }
-                InitHeadersObjectToHttpRequestHeaders(httpClient, headers);
-                return GetResponse<O>(action(httpClient));
+                using (HttpClient httpClient = new HttpClient(handler))
+                {
+                    httpClient.Timeout = Timeout;
+                    if (!String.IsNullOrEmpty(token))
+                    {
+                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                    }
+                    InitHeadersObjectToHttpRequestHeaders(httpClient, headers);
+                    return GetResponse<O>(action(httpClient));
+                }
             }
         }
 
