@@ -19,6 +19,8 @@ namespace FewBox.Core.Utility.Net
             Timeout = TimeSpan.FromMinutes(1);
         }
 
+        # region Normal
+        
         public static O Post<B, O>(string url, Package<B> package) where O : class
         {
             string responseString = String.Empty;
@@ -36,6 +38,7 @@ namespace FewBox.Core.Utility.Net
                 return httpClient.PostAsync(url, ConvertBodyObjectToStringContent(package.Body));
             }, token, package.Headers);
         }
+
         public static O Put<B, O>(string url, Package<B> package) where O : class
         {
             return WapperHttpClient<O>((httpClient) =>
@@ -99,6 +102,76 @@ namespace FewBox.Core.Utility.Net
                 return httpClient.GetAsync(url);
             }, token, headers);
         }
+
+        # endregion
+
+        # region Special
+
+        public static O Head<O>(string url, IList<Header> headers) where O : class
+        {
+            return WapperHttpClient<O>((httpClient) =>
+            {
+                return httpClient.HeadAsync(url);
+            }, headers);
+        }
+
+        public static O Head<O>(string url, string token, IList<Header> headers) where O : class
+        {
+            return WapperHttpClientWithToken<O>((httpClient) =>
+            {
+                return httpClient.HeadAsync(url);
+            }, token, headers);
+        }
+
+        public static O Connect<O>(string url, IList<Header> headers) where O : class
+        {
+            return WapperHttpClient<O>((httpClient) =>
+            {
+                return httpClient.ConnectAsync(url);
+            }, headers);
+        }
+
+        public static O Connect<O>(string url, string token, IList<Header> headers) where O : class
+        {
+            return WapperHttpClientWithToken<O>((httpClient) =>
+            {
+                return httpClient.ConnectAsync(url);
+            }, token, headers);
+        }
+
+        public static O Options<O>(string url, IList<Header> headers) where O : class
+        {
+            return WapperHttpClient<O>((httpClient) =>
+            {
+                return httpClient.OptionsAsync(url);
+            }, headers);
+        }
+
+        public static O Options<O>(string url, string token, IList<Header> headers) where O : class
+        {
+            return WapperHttpClientWithToken<O>((httpClient) =>
+            {
+                return httpClient.OptionsAsync(url);
+            }, token, headers);
+        }
+
+        public static O Trace<O>(string url, IList<Header> headers) where O : class
+        {
+            return WapperHttpClient<O>((httpClient) =>
+            {
+                return httpClient.TraceAsync(url);
+            }, headers);
+        }
+
+        public static O Trace<O>(string url, string token, IList<Header> headers) where O : class
+        {
+            return WapperHttpClientWithToken<O>((httpClient) =>
+            {
+                return httpClient.TraceAsync(url);
+            }, token, headers);
+        }
+
+        # endregion
 
         private static StringContent ConvertBodyObjectToStringContent<T>(T body)
         {
