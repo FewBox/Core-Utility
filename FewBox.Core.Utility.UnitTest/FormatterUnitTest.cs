@@ -39,6 +39,14 @@ namespace FewBox.Core.Utility.UnitTest
             Assert.AreEqual("Hello World!", BinaryUtility.Deserialize<HelloWorld>(helloWorldBinary).Greeting);
         }
 
+        [TestMethod]
+        public void TestYamlUtility()
+        {
+            var helloWorld = new HelloWorld { Greeting = "Hello World!" };
+            var helloWorldYaml = YamlUtility.Serialize(helloWorld);
+            Assert.AreEqual("Hello World!", YamlUtility.Deserialize<HelloWorld>(helloWorldYaml).Greeting);
+        }
+
         [Serializable]
         public class HelloWorld
         {
