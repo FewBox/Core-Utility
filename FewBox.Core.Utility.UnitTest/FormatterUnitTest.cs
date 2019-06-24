@@ -24,6 +24,16 @@ namespace FewBox.Core.Utility.UnitTest
         }
 
         [TestMethod]
+        public void TestJsonUtilityWithCamelCase()
+        {
+            JsonUtility.IsCamelCase = true;
+            var helloWorld = new { Greeting = "Hello World!" };
+            string helloWorldJsonString = JsonUtility.Serialize(helloWorld);
+            Assert.AreEqual("Hello World!", JsonUtility.Deserialize<dynamic>(helloWorldJsonString).greeting.ToString());
+            JsonUtility.IsCamelCase = false;
+        }
+
+        [TestMethod]
         public void TestXmlUtility()
         {
             var helloWorld = new HelloWorld { Greeting = "Hello World!" };
