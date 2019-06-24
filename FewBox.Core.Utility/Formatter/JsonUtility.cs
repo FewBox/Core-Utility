@@ -8,6 +8,7 @@ namespace FewBox.Core.Utility.Formatter
     public static class JsonUtility
     {
         public static bool IsCamelCase { private get; set; }
+        public static bool IsNullIgnore { private get; set; }
         public static string Serialize<T>(T obj)
         {
             string jsonString = String.Empty;
@@ -33,21 +34,18 @@ namespace FewBox.Core.Utility.Formatter
 
         private static JsonSerializer GetJsonSerializer()
         {
-            JsonSerializer jsonSerializer;
+            JsonSerializerSettings jsonSerializerSettings = new JsonSerializerSettings();
             if(IsCamelCase)
             {
-                var jsonSerializerSettings = new JsonSerializerSettings{
-                    ContractResolver = new DefaultContractResolver {
-                        NamingStrategy = new CamelCaseNamingStrategy()
-                    }
+                jsonSerializerSettings.ContractResolver = new DefaultContractResolver {
+                    NamingStrategy = new CamelCaseNamingStrategy()
                 };
-                jsonSerializer = JsonSerializer.Create(jsonSerializerSettings);
             }
-            else
+            if(IsNullIgnore)
             {
-                jsonSerializer = new JsonSerializer();
+                jsonSerializerSettings.NullValueHandling = NullValueHandling.Ignore;
             }
-            return jsonSerializer;
+            return JsonSerializer.Create(jsonSerializerSettings);;
         }
     }
 }

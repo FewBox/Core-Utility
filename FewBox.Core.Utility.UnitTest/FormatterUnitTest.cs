@@ -34,6 +34,18 @@ namespace FewBox.Core.Utility.UnitTest
         }
 
         [TestMethod]
+        public void TestJsonUtilityIgnoreNull()
+        {
+            var helloWorld = new HelloWorld { Greeting = "Hello World!" };
+            JsonUtility.IsNullIgnore = true;
+            string helloWorldJsonString = JsonUtility.Serialize(helloWorld);
+            Assert.IsFalse(helloWorldJsonString.Contains("Null"));
+            JsonUtility.IsNullIgnore = false;
+            helloWorldJsonString = JsonUtility.Serialize(helloWorld);
+            Assert.IsTrue(helloWorldJsonString.Contains("Null"));
+        }
+
+        [TestMethod]
         public void TestXmlUtility()
         {
             var helloWorld = new HelloWorld { Greeting = "Hello World!" };
@@ -61,6 +73,7 @@ namespace FewBox.Core.Utility.UnitTest
         public class HelloWorld
         {
             public string Greeting { get; set; }
+            public string Null { get; set; }
         }
     }
 }
