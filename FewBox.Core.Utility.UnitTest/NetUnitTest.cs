@@ -112,7 +112,7 @@ namespace FewBox.Core.Utility.UnitTest
             Assert.IsTrue(stopwatch.ElapsedMilliseconds < 5000);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void TestWebSocketUtility()
         {
             string result = WebSocketUtility.Post("wss://mesh.fewbox.com:6443/api/v1/namespaces/fewbox-staging/pods/auth-deployment-latest-c56c67c8-vj7ph/exec?command=/bin/bash&stdin=true&stderr=true&stdout=true&tty=true&container=auth",
