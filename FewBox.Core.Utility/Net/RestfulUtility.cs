@@ -11,16 +11,18 @@ namespace FewBox.Core.Utility.Net
     public static class RestfulUtility
     {
         public static bool IsCertificateNeedValidate { private get; set; }
+        public static bool IsLogging { private get; set; }
         public static TimeSpan Timeout { private get; set; }
 
         static RestfulUtility()
         {
+            IsLogging = false;
             IsCertificateNeedValidate = true;
             Timeout = TimeSpan.FromMinutes(1);
         }
 
-        # region Normal
-        
+        #region Normal
+
         public static O Post<B, O>(string url, Package<B> package) where O : class
         {
             string responseString = String.Empty;
@@ -176,6 +178,10 @@ namespace FewBox.Core.Utility.Net
         private static StringContent ConvertBodyObjectToStringContent<T>(T body)
         {
             string jsonString = JsonUtility.Serialize<T>(body);
+            if (IsLogging)
+            {
+                Console.WriteLine(jsonString);
+            }
             return new StringContent(jsonString, Encoding.UTF8, "application/json");
         }
 
@@ -202,7 +208,7 @@ namespace FewBox.Core.Utility.Net
         {
             using (var handler = new HttpClientHandler())
             {
-                if(!IsCertificateNeedValidate)
+                if (!IsCertificateNeedValidate)
                 {
                     handler.ClientCertificateOptions = ClientCertificateOption.Manual;
                     handler.ServerCertificateCustomValidationCallback =
