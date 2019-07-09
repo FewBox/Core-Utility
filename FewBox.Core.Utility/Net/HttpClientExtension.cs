@@ -7,11 +7,6 @@ namespace FewBox.Core.Utility.Net
 {
     public static class HttpClientExtension
     {
-        public static async Task<HttpResponseMessage> PatchAsync(this HttpClient client, string requestUri, HttpContent httpContent)
-        {
-            return await VerbAsync(client, requestUri, "PATCH", httpContent);
-        }
-
         public static async Task<HttpResponseMessage> HeadAsync(this HttpClient client, string requestUri)
         {
             return await VerbAsync(client, requestUri, "HEAD");

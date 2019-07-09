@@ -61,7 +61,7 @@ namespace FewBox.Core.Utility.Net
         {
             return WapperHttpClient<O>((httpClient) =>
             {
-                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body));
+                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body, "application/json-patch+json"));
             }, package.Headers);
         }
 
@@ -69,7 +69,7 @@ namespace FewBox.Core.Utility.Net
         {
             return WapperHttpClientWithToken<O>((httpClient) =>
             {
-                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body));
+                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body, "application/json-patch+json"));
             }, token, package.Headers);
         }
 
@@ -177,12 +177,17 @@ namespace FewBox.Core.Utility.Net
 
         private static StringContent ConvertBodyObjectToStringContent<T>(T body)
         {
+            return ConvertBodyObjectToStringContent(body, "application/json");
+        }
+
+        private static StringContent ConvertBodyObjectToStringContent<T>(T body, string mediaType)
+        {
             string jsonString = JsonUtility.Serialize<T>(body);
             if (IsLogging)
             {
                 Console.WriteLine(jsonString);
             }
-            return new StringContent(jsonString, Encoding.UTF8, "application/json");
+            return new StringContent(jsonString, Encoding.UTF8, mediaType);
         }
 
         private static void InitHeadersObjectToHttpRequestHeaders(HttpClient httpClient, IList<Header> headers)
