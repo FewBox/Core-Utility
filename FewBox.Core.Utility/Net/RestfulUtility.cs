@@ -57,19 +57,19 @@ namespace FewBox.Core.Utility.Net
             }, token, package.Headers);
         }
 
-        public static O Patch<B, O>(string url, Package<B> package) where O : class
+        public static O Patch<B, O>(string url, Package<B> package, string mediaType) where O : class
         {
             return WapperHttpClient<O>((httpClient) =>
             {
-                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body, "application/json-patch+json"));
+                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body, mediaType));
             }, package.Headers);
         }
 
-        public static O Patch<B, O>(string url, string token, Package<B> package) where O : class
+        public static O Patch<B, O>(string url, string token, Package<B> package, string mediaType) where O : class
         {
             return WapperHttpClientWithToken<O>((httpClient) =>
             {
-                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body, "application/json-patch+json"));
+                return httpClient.PatchAsync(url, ConvertBodyObjectToStringContent(package.Body, mediaType));
             }, token, package.Headers);
         }
 

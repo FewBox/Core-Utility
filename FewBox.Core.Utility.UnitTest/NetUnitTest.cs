@@ -76,7 +76,7 @@ namespace FewBox.Core.Utility.UnitTest
                     new Header { Key = "Trace-Id", Value = "FEWBOX001" }
                 },
                 Body = new Request { Name = "FewBox" }
-            });
+            }, "application/json-patch+json"); // application/json-patch+json application/merge-patch+json
             Assert.IsNotNull(response);
             Assert.AreEqual($"FEWBOX001", response.Headers["Trace-Id"].Value);
             Assert.AreEqual($"FewBox", response.Json["Name"].Value);
