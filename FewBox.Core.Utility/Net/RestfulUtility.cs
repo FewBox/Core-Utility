@@ -12,6 +12,7 @@ namespace FewBox.Core.Utility.Net
     {
         public static bool IsCertificateNeedValidate { private get; set; }
         public static bool IsLogging { private get; set; }
+        public static bool IsEnsureSuccessStatusCode { private get; set; }
         public static TimeSpan Timeout { private get; set; }
 
         static RestfulUtility()
@@ -241,7 +242,10 @@ namespace FewBox.Core.Utility.Net
             task.ContinueWith((requestTask) =>
                 {
                     HttpResponseMessage httpResponseMessage = requestTask.Result;
-                    httpResponseMessage.EnsureSuccessStatusCode();
+                    if (IsEnsureSuccessStatusCode)
+                    {
+                        httpResponseMessage.EnsureSuccessStatusCode();
+                    }
                     return httpResponseMessage.Content.ReadAsStringAsync().Result;
                 }
             )
