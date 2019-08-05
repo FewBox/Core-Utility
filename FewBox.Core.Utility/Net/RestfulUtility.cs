@@ -19,6 +19,7 @@ namespace FewBox.Core.Utility.Net
         {
             IsLogging = false;
             IsCertificateNeedValidate = true;
+            IsEnsureSuccessStatusCode = true;
             Timeout = TimeSpan.FromMinutes(1);
         }
 

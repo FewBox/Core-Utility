@@ -19,6 +19,15 @@ namespace FewBox.Core.Utility.UnitTest
         }
 
         [TestMethod]
+        public void TestHttpPureGet()
+        {
+            string url = $"{this.BaseUrl}/base64/RmV3Qm94";
+            string token = "<token>";
+            string response = HttpUtility.Get(url, token, new List<Header> { });
+            Assert.AreEqual("FewBox", response);
+        }
+
+        [TestMethod]
         public void TestRestfulUtilityGet()
         {
             string url = $"{this.BaseUrl}/get";
@@ -101,10 +110,10 @@ namespace FewBox.Core.Utility.UnitTest
         {
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
-            for(int index=0;index<200;index++)
+            for (int index = 0; index < 200; index++)
             {
                 string url = $"https://raw.githubusercontent.com/FewBox/fewbox.github.io/master/version.json";
-                var response = RestfulUtility.Get<Object>(url, new List<Header>{});
+                var response = RestfulUtility.Get<Object>(url, new List<Header> { });
                 string responseString = response.ToString();
                 Assert.IsNotNull(responseString);
             }
@@ -117,7 +126,7 @@ namespace FewBox.Core.Utility.UnitTest
         {
             string result = WebSocketUtility.Post("wss://mesh.fewbox.com:6443/api/v1/namespaces/fewbox-staging/pods/auth-deployment-latest-c56c67c8-vj7ph/exec?command=/bin/bash&stdin=true&stderr=true&stdout=true&tty=true&container=auth",
             "",
-            new List<Header>{}).Result;
+            new List<Header> { }).Result;
             //Assert.Fail(result);
         }
 
