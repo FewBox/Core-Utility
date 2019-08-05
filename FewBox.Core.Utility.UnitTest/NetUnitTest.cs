@@ -21,6 +21,8 @@ namespace FewBox.Core.Utility.UnitTest
         [TestMethod]
         public void TestHttpPureGet()
         {
+            HttpUtility.IsCertificateNeedValidate = false;
+            HttpUtility.IsEnsureSuccessStatusCode = false;
             string url = $"{this.BaseUrl}/base64/RmV3Qm94";
             string token = "<token>";
             string response = HttpUtility.Get(url, token, new List<Header> { });
