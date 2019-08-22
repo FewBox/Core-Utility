@@ -4,6 +4,7 @@ using System.Diagnostics;
 using FewBox.Core.Utility.Formatter;
 using FewBox.Core.Utility.Net;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace FewBox.Core.Utility.UnitTest
 {
@@ -37,6 +38,15 @@ namespace FewBox.Core.Utility.UnitTest
             var response = RestfulUtility.Get<Response>(url, token, new List<Header> { });
             Assert.IsNotNull(response);
             Assert.AreEqual($"Bearer {token}", response.Headers["Authorization"].Value);
+        }
+
+        [TestMethod]
+        public void TestRestfulUtilityGetDash()
+        {
+            string url = $"{this.BaseUrl}/anything";
+            var anything = RestfulUtility.Get<Anything>(url, new List<Header> { });
+            Assert.IsNotNull(anything);
+            Assert.IsTrue(anything.Headers.User_Agent.Contains("FewBox"));
         }
 
         [TestMethod]
@@ -144,6 +154,17 @@ namespace FewBox.Core.Utility.UnitTest
             public dynamic Data { get; set; }
             public dynamic Json { get; set; }
             public string Url { get; set; }
+        }
+
+        private class Anything
+        {
+            public Headers Headers { get; set; }
+        }
+
+        private class Headers
+        {
+            [JsonProperty("User-Agent")]
+            public string User_Agent { get; set; }
         }
     }
 }
