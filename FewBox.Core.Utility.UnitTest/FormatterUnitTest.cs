@@ -1,6 +1,7 @@
 ﻿using System;
 using FewBox.Core.Utility.Formatter;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 
 namespace FewBox.Core.Utility.UnitTest
 {
@@ -21,6 +22,14 @@ namespace FewBox.Core.Utility.UnitTest
             var helloWorld = new { Greeting = "Hello World!" };
             string helloWorldJsonString = JsonUtility.Serialize(helloWorld);
             Assert.AreEqual("Hello World!", JsonUtility.Deserialize<dynamic>(helloWorldJsonString).Greeting.ToString());
+        }
+
+        [TestMethod]
+        public void TestJsonUtilityDash()
+        {
+            var dash = new Dash { Dash_Test = "Dash-Test" };
+            string dashJsonString = JsonUtility.Serialize(dash);
+            Assert.AreEqual("Dash-Test", JsonUtility.Deserialize<Dash>(dashJsonString).Dash_Test.ToString());
         }
 
         [TestMethod]
@@ -74,6 +83,13 @@ namespace FewBox.Core.Utility.UnitTest
         {
             public string Greeting { get; set; }
             public string Null { get; set; }
+        }
+
+        [Serializable]
+        public class Dash
+        {
+            [JsonProperty("dash-test")]
+            public string Dash_Test { get; set; }
         }
     }
 }
