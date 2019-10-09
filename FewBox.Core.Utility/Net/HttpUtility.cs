@@ -44,6 +44,7 @@ namespace FewBox.Core.Utility.Net
 
         private static void InitHeadersObjectToHttpRequestHeaders(HttpClient httpClient, IList<Header> headers)
         {
+            httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
             httpClient.DefaultRequestHeaders.UserAgent.Clear();
             httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("FewBox/0.1 (Linux x86_64)");
