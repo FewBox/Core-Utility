@@ -44,17 +44,20 @@ namespace FewBox.Core.Utility.Net
 
         private static void InitHeadersObjectToHttpRequestHeaders(HttpClient httpClient, IList<Header> headers)
         {
-            httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
-            httpClient.DefaultRequestHeaders.UserAgent.Clear();
-            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("FewBox/0.1 (Linux x86_64)");
             if (headers != null)
             {
                 foreach (var header in headers)
                 {
-                    httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    if (!header.Key.Equals("Content-Type", StringComparison.OrdinalIgnoreCase))
+                    {
+                        httpClient.DefaultRequestHeaders.Add(header.Key, header.Value);
+                    }
                 }
             }
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("*/*"));
+            httpClient.DefaultRequestHeaders.UserAgent.Clear();
+            httpClient.DefaultRequestHeaders.UserAgent.ParseAdd("FewBox/0.1 (Linux x86_64)");
         }
 
         private static string WapperHttpClient(Func<HttpClient, Task<HttpResponseMessage>> action, IList<Header> headers)
