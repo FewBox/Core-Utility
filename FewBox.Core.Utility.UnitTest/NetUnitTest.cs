@@ -142,7 +142,7 @@ namespace FewBox.Core.Utility.UnitTest
             //Assert.Fail(result);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void TestAuthUtility()
         {
             var result = RestfulUtility.Get<PayloadResponseDto<IList<string>>>($"http://116.196.120.216/api/auth/Auth/Nodes/Get", new List<Header> {

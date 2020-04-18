@@ -82,7 +82,7 @@ namespace FewBox.Core.Utility.UnitTest
                 ApiVersion = "v1",
                 Kind = "Pod",
                 Metadata = new Metadata{
-                    Annotations = new Dictionary<string, string> {{"sidecar.istio.io/status", "{\"version\":\"887285bb7fa76191bf7f637f283183f0ba057323b078d44c3db45978346cbc1a\",\"initContainers\":[\"istio-init\"],\"containers\":[\"istio-proxy\"],\"volumes\":[\"istio-envoy\",\"istio-certs\"],\"imagePullSecrets\":null}"}}
+                    Annotations = new Dictionary<string, string> {{"sidecar.istio.io/status", "{\"version\":\"887285bb7fa76191bf7f637f283183f0ba057323b078d44c3db45978346cbc1a\",\"initContainers\":[\"istio-init\"],\"containers\":[\"istio-proxy\"],\"volumes\":[\"istio-envoy\",\"istio-certs\"],\"imagePullSecrets\":null}"}},
                     CreationTimestamp = DateTime.Now,
                     Labels = new Dictionary<string, string> {{"app","fewbox"},{"pod-template-hash","76d889886b"},{"version","v1"}},
                     Name = "fewbox-76d889886b-9dtk",

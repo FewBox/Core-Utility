@@ -28,7 +28,7 @@ namespace FewBox.Core.Utility.UnitTest
             to = TypeUtility.Converte<string>(from);
             Assert.AreEqual(from, to);
             stopwatch.Stop();
-            Assert.IsTrue(stopwatch.Elapsed.Milliseconds<100, $"Time: {stopwatch.Elapsed.Milliseconds} milliseconds.");
+            Assert.IsTrue(stopwatch.Elapsed.Milliseconds < 500, $"Time: {stopwatch.Elapsed.Milliseconds} milliseconds.");
         }
     }
 }

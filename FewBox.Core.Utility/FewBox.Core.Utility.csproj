@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
      <Copyright>FewBox (c) 2019</Copyright>
     <PackageLicenseUrl>https://raw.githubusercontent.com/FewBox/FewBox.Core.Utility/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://fewbox.com</PackageProjectUrl>
     <PackageTags>Utility</PackageTags>
-    <Version>1.0.30</Version>
+    <Version>1.0.31</Version>
     <PackageIconUrl>https://secure.gravatar.com/avatar/ce54e932b36c8d58321cc956410c37ed</PackageIconUrl>
     <RepositoryUrl>https://github.com/FewBox/FewBox.Core.Utility</RepositoryUrl>
     <Company>FewBox</Company>
@@ -17,9 +17,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Grpc" Version="1.18.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
-    <PackageReference Include="YamlDotNet" Version="6.1.1" />
+    <PackageReference Include="Grpc" Version="2.28.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="YamlDotNet" Version="8.1.0" />
   </ItemGroup>
 
 </Project>
